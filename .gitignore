@@ -10,3 +10,7 @@ rel/example_project
 .rebar
 *.pdb
 *.swp
+_build/
+rebar.lock
+priv/
+tmp/

@@ -1,35 +1,10 @@
 -module(binnifcpy).
-
--behaviour(application).
--behaviour(supervisor).
-
-%% Application callbacks
--export([start/0, stop/0, start/2, stop/1]).
-
-%% Supervisor callbacks
--export([init/1]).
-
 -export([byte_array/1]).
 
-%% ===================================================================
-%% Application callbacks
-%% ===================================================================
+-on_load(init/0).
 
-start() -> application:start(?MODULE).
-start(_StartType, _StartArgs) ->
-    erlang:load_nif(priv_dir() ++ "/binnifcpy", 0),
-    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
-
-stop() -> application:stop(?MODULE).
-stop(_State) ->
-    ok.
-
-%% ===================================================================
-%% Supervisor callbacks
-%% ===================================================================
-
-init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+init() ->
+    erlang:load_nif(priv_dir() ++ "/binnifcpy", 0).
 
 byte_array(_X) ->
     exit(nif_library_not_loaded).

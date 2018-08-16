@@ -1,7 +1,7 @@
-#include "erl_nif.h"
-
-#include <string.h>
 #include <stdint.h>
+#include <string.h>
+
+#include "erl_nif.h"
 
 static ERL_NIF_TERM byte_array_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[])
 {
@@ -18,8 +18,13 @@ static ERL_NIF_TERM byte_array_nif(ErlNifEnv* env, int argc, const ERL_NIF_TERM 
     return enif_make_binary(env, &buffer);
 }
 
+int upgrade(ErlNifEnv* env, void** priv_data, void** old_priv_data, ERL_NIF_TERM load_info)
+{
+    return 0;
+}
+
 static ErlNifFunc nif_funcs[] = {
     {"byte_array", 1, byte_array_nif}
 };
 
-ERL_NIF_INIT(binnifcpy, nif_funcs, NULL, NULL, NULL, NULL)
+ERL_NIF_INIT(binnifcpy, nif_funcs, NULL, NULL, upgrade, NULL)
