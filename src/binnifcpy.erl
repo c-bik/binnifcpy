@@ -18,3 +18,16 @@ priv_dir() ->
                   code:which(?MODULE))), "priv");
         D -> D
     end.
+
+-ifdef(TEST).
+-include_lib("eunit/include/eunit.hrl").
+
+basic_test() ->
+    List = lists:duplicate(1024 * 1024 * 5, 0),
+    BinZero = list_to_binary(List),
+    TestBin = << <<(rand:uniform(255))>> || _ <- List>>,
+    ?assertNotEqual(BinZero, TestBin),
+    ?assertEqual(BinZero, byte_array(TestBin)),
+    ?assertEqual(BinZero, TestBin).
+
+-endif.
